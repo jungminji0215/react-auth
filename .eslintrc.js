@@ -12,7 +12,13 @@ module.exports = {
       version: 'detect',
     },
   },
-  plugins: ['react', '@typescript-eslint', 'prettier'],
+  plugins: [
+    'react',
+    '@typescript-eslint',
+    'prettier',
+    'simple-import-sort',
+    'import',
+  ],
   extends: [
     'eslint:recommended',
     'plugin:react/recommended',
@@ -20,5 +26,18 @@ module.exports = {
   ],
   rules: {
     'prettier/prettier': 'error',
+    'simple-import-sort/imports': 'error',
+    'simple-import-sort/exports': 'error',
+    'import/order': [
+      'error',
+      {
+        groups: [
+          ['builtin', 'external'],
+          'internal',
+          ['parent', 'sibling', 'index'],
+        ],
+        'newlines-between': 'always',
+      },
+    ],
   },
 };
