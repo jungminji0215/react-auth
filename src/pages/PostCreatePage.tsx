@@ -1,3 +1,5 @@
+import PageContainer from '../components/PageContainer.tsx';
+
 export default function PostCreatePage() {
-  return <div>PostCreatePage</div>;
+  return <PageContainer>PostCreatePage</PageContainer>;
 }

@@ -1,3 +1,5 @@
+import PageContainer from '../components/PageContainer.tsx';
+
 export default function SignInPage() {
-  return <div>SignInPage</div>;
+  return <PageContainer>SignInPage</PageContainer>;
 }

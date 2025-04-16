@@ -1,1 +1,9 @@
 @import "tailwindcss";
+
+body{
+
+}
+
+@theme{
+    --color-primary: yellow;
+}
