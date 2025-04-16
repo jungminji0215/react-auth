@@ -1,7 +1,5 @@
-import './App.css';
+import AppRouter from './routes/AppRouter.tsx';
 
-function App() {
-  return <div>인덱스</div>;
+export default function App() {
+  return <AppRouter />;
 }
-
-export default App;
