@@ -7,3 +7,9 @@ body{
 @theme{
     --color-primary: yellow;
 }
+
+@layer components {
+    .wrapper {
+        @apply mx-auto max-w-5xl p-4;
+    }
+}
