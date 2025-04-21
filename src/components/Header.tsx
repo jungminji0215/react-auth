@@ -2,7 +2,7 @@ import { Link } from 'react-router';
 
 export default function Header() {
   return (
-    <header className="wrapper bg-gray-100">
+    <header className="wrapper ">
       <div className="flex justify-between">
         <h2>심플앱</h2>
         <ul className="flex gap-4">
