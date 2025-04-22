@@ -1,6 +1,7 @@
 import PageContainer from '../components/PageContainer.tsx';
 import { useQuery } from '@tanstack/react-query';
 import { getPosts } from '../api/post.ts';
+import { Link } from 'react-router';
 
 export default function HomePage() {
   const {
@@ -24,7 +25,9 @@ export default function HomePage() {
   return (
     <PageContainer>
       <div className="flex justify-end">
-        <button className="bg-primary p-4 rounded-xl">글 등록</button>
+        <button className="bg-primary p-4 rounded-xl">
+          <Link to="/posts/new">글등록</Link>
+        </button>
       </div>
 
       <section className="flex flex-col items-center justify-center gap-4 mt-4">
