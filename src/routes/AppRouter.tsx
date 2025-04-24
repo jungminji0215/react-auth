@@ -2,10 +2,10 @@ import { createBrowserRouter, RouterProvider } from 'react-router';
 import NotFoundPage from '../pages/NotFoundPage.tsx';
 import MainLayout from '../layouts/MainLayout.tsx';
 import HomePage from '../pages/HomePage.tsx';
-import PostCreatePage from '../pages/PostCreatePage.tsx';
 import AuthLayout from '../layouts/AuthLayout.tsx';
-import SignUpPage from '../pages/SignUpPage.tsx';
-import SignInPage from '../pages/SignInPage.tsx';
+import SignUpPage from '../pages/auth/SignUpPage.tsx';
+import SignInPage from '../pages/auth/SignInPage.tsx';
+import AuthPlaygroundPage from '../pages/auth/AuthPlaygroundPage.tsx';
 
 const router = createBrowserRouter([
   {
@@ -13,28 +13,26 @@ const router = createBrowserRouter([
     Component: MainLayout,
     errorElement: <NotFoundPage />,
     children: [
-      {
-        path: '/',
-        Component: HomePage,
-      },
-      {
-        path: '/posts/new',
-        Component: PostCreatePage,
-      },
+      { index: true, Component: HomePage },
+      // {
+      //   path: '/posts/new',
+      //   Component: PostCreatePage,
+      // },
     ],
   },
 
   {
-    path: '',
+    path: '/auth',
     Component: AuthLayout,
     errorElement: <NotFoundPage />,
     children: [
+      { index: true, Component: AuthPlaygroundPage },
       {
-        path: '/signup',
+        path: 'signup',
         Component: SignUpPage,
       },
       {
-        path: '/signin',
+        path: 'signin',
         Component: SignInPage,
       },
     ],

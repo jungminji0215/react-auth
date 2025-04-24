@@ -1,7 +1,7 @@
-import PageContainer from '../components/PageContainer.tsx';
+import PageContainer from '../../components/PageContainer.tsx';
 import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createPost } from '../api/post.ts';
+import { createPost } from '../../api/post.ts';
 import { useNavigate } from 'react-router';
 import * as React from 'react';
 

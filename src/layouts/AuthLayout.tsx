@@ -1,9 +1,13 @@
 import { Outlet } from 'react-router';
+import Header from '../components/Header.tsx';
 
 export default function AuthLayout() {
   return (
-    <main>
-      <Outlet />
-    </main>
+    <>
+      <Header />
+      <main>
+        <Outlet />
+      </main>
+    </>
   );
 }
