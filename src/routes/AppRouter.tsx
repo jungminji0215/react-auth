@@ -5,28 +5,20 @@ import HomePage from '../pages/HomePage.tsx';
 import AuthLayout from '../layouts/AuthLayout.tsx';
 import SignUpPage from '../pages/auth/SignUpPage.tsx';
 import SignInPage from '../pages/auth/SignInPage.tsx';
-import AuthPlaygroundPage from '../pages/auth/AuthPlaygroundPage.tsx';
 
 const router = createBrowserRouter([
   {
     path: '/',
     Component: MainLayout,
     errorElement: <NotFoundPage />,
-    children: [
-      { index: true, Component: HomePage },
-      // {
-      //   path: '/posts/new',
-      //   Component: PostCreatePage,
-      // },
-    ],
+    children: [{ index: true, Component: HomePage }],
   },
 
   {
-    path: '/auth',
+    path: '/',
     Component: AuthLayout,
     errorElement: <NotFoundPage />,
     children: [
-      { index: true, Component: AuthPlaygroundPage },
       {
         path: 'signup',
         Component: SignUpPage,

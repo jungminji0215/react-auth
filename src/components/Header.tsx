@@ -9,10 +9,10 @@ export default function Header() {
         </h2>
         <ul className="flex gap-4">
           <li>
-            <Link to="/auth/signin">로그인</Link>
+            <Link to="/signin">로그인</Link>
           </li>
           <li>
-            <Link to="/auth/signup">회원가입</Link>
+            <Link to="/signup">회원가입</Link>
           </li>
           <button>로그아웃</button>
         </ul>
