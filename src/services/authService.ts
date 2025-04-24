@@ -11,13 +11,17 @@ export const authService = {
     return data;
   },
 
+  async signOut() {
+    await api.post('/api/signout');
+  },
+
   async getMe() {
     const { data } = await api.get('/api/me');
     return data;
   },
 
   async refreshAccessToken() {
-    const { data } = await api.post('/api/refreshToken');
-    return data.accessToken;
+    const { data } = await api.get('/api/refreshToken');
+    return data;
   },
 };

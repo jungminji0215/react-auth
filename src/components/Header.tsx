@@ -1,6 +1,24 @@
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
+import { authService } from '../services/authService.ts';
+import { useAuth } from '../contexts/AuthProvider.tsx';
 
 export default function Header() {
+  const { setToken } = useAuth();
+
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await authService.signOut();
+      setToken(null);
+      console.log('로그아웃 완료');
+      navigate('/');
+    } catch (error) {
+      console.error(error);
+      alert('로그아웃 실패했습니다.');
+    }
+  };
+
   return (
     <header className="border-b border-gray-300">
       <div className="wrapper flex justify-between">
@@ -14,7 +32,9 @@ export default function Header() {
           <li>
             <Link to="/signup">회원가입</Link>
           </li>
-          <button>로그아웃</button>
+          <button onClick={handleLogout} className="cursor-pointer">
+            로그아웃
+          </button>
         </ul>
       </div>
     </header>

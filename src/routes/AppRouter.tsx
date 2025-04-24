@@ -5,13 +5,20 @@ import HomePage from '../pages/HomePage.tsx';
 import AuthLayout from '../layouts/AuthLayout.tsx';
 import SignUpPage from '../pages/auth/SignUpPage.tsx';
 import SignInPage from '../pages/auth/SignInPage.tsx';
+import MyPage from '../pages/auth/MyPage.tsx';
 
 const router = createBrowserRouter([
   {
     path: '/',
     Component: MainLayout,
     errorElement: <NotFoundPage />,
-    children: [{ index: true, Component: HomePage }],
+    children: [
+      { index: true, Component: HomePage },
+      {
+        path: 'mypage',
+        Component: MyPage,
+      },
+    ],
   },
 
   {
