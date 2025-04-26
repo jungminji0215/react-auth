@@ -12,6 +12,7 @@ import * as React from 'react';
 
 type AuthContextType = {
   token: string | null | undefined;
+  user: string | null | undefined;
   setToken: React.Dispatch<React.SetStateAction<string | null | undefined>>;
 };
 
@@ -19,23 +20,33 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [token, setToken] = useState<string | null | undefined>(); // 아직 토큰을 가져오지 않았음을 의미
-
-  console.log('로그인 : ', token);
+  const [user, setUser] = useState<string | null | undefined>();
 
   useEffect(() => {
-    const fetchMe = async () => {
+    const initToken = async () => {
       try {
-        const response = await authService.getMe();
-
-        setToken(response.accessToken);
-      } catch (error) {
-        console.error('내 정보 가져오기 오류 발생, 로그인 안 함', error);
+        const { accessToken } = await authService.refreshAccessToken();
+        setToken(accessToken);
+      } catch {
         setToken(null);
       }
     };
-
-    fetchMe();
+    initToken();
   }, []);
+
+  useEffect(() => {
+    if (!token) return;
+
+    const fetchUser = async () => {
+      try {
+        const { user } = await authService.getMe();
+        setUser(user);
+      } catch {
+        setUser(null);
+      }
+    };
+    fetchUser();
+  }, [token]);
 
   useLayoutEffect(() => {
     const authInterceptor = api.interceptors.request.use((config) => {
@@ -83,7 +94,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, [token]);
 
   return (
-    <AuthContext.Provider value={{ token, setToken }}>
+    <AuthContext.Provider value={{ token, setToken, user }}>
       {children}
     </AuthContext.Provider>
   );
