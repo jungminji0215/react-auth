@@ -6,6 +6,8 @@ import AuthLayout from '../layouts/AuthLayout.tsx';
 import SignUpPage from '../pages/auth/SignUpPage.tsx';
 import SignInPage from '../pages/auth/SignInPage.tsx';
 import MyPage from '../pages/auth/MyPage.tsx';
+import ProtectedRoute from '../components/ProtectedRoute.tsx';
+import PublicRoute from '../components/PublicRoute.tsx';
 
 const router = createBrowserRouter([
   {
@@ -13,10 +15,14 @@ const router = createBrowserRouter([
     Component: MainLayout,
     errorElement: <NotFoundPage />,
     children: [
+      // 누구나 접근 가능
       { index: true, Component: HomePage },
+
+      // mypage 는 로그인한 사용자만
       {
         path: 'mypage',
-        Component: MyPage,
+        Component: ProtectedRoute,
+        children: [{ index: true, Component: MyPage }],
       },
     ],
   },
@@ -26,13 +32,16 @@ const router = createBrowserRouter([
     Component: AuthLayout,
     errorElement: <NotFoundPage />,
     children: [
+      // /signup, /signin 은 로그인 안 한 사용자만
       {
         path: 'signup',
-        Component: SignUpPage,
+        Component: PublicRoute,
+        children: [{ index: true, Component: SignUpPage }],
       },
       {
         path: 'signin',
-        Component: SignInPage,
+        Component: PublicRoute,
+        children: [{ index: true, Component: SignInPage }],
       },
     ],
   },

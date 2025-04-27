@@ -3,7 +3,7 @@ import { authService } from '../services/authService.ts';
 import { useAuth } from '../contexts/AuthProvider.tsx';
 
 export default function Header() {
-  const { setToken } = useAuth();
+  const { setToken, token } = useAuth();
 
   const navigate = useNavigate();
 
@@ -11,7 +11,6 @@ export default function Header() {
     try {
       await authService.signOut();
       setToken(null);
-      console.log('로그아웃 완료');
       navigate('/');
     } catch (error) {
       console.error(error);
@@ -26,15 +25,22 @@ export default function Header() {
           <Link to="/">🏠</Link>
         </h2>
         <ul className="flex gap-4">
-          <li>
-            <Link to="/signin">로그인</Link>
-          </li>
-          <li>
-            <Link to="/signup">회원가입</Link>
-          </li>
-          <button onClick={handleLogout} className="cursor-pointer">
-            로그아웃
-          </button>
+          {token ? (
+            <li>
+              <button onClick={handleLogout} className="cursor-pointer">
+                로그아웃
+              </button>
+            </li>
+          ) : (
+            <>
+              <li>
+                <Link to="/signin">로그인</Link>
+              </li>
+              <li>
+                <Link to="/signup">회원가입</Link>
+              </li>
+            </>
+          )}
         </ul>
       </div>
     </header>

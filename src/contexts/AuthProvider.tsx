@@ -13,6 +13,7 @@ import * as React from 'react';
 type AuthContextType = {
   token: string | null | undefined;
   user: string | null | undefined;
+  isLoading: boolean;
   setToken: React.Dispatch<React.SetStateAction<string | null | undefined>>;
 };
 
@@ -21,21 +22,27 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [token, setToken] = useState<string | null | undefined>(); // 아직 토큰을 가져오지 않았음을 의미
   const [user, setUser] = useState<string | null | undefined>();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    console.log('로그인 했는지 확인할게요');
     const initToken = async () => {
       try {
         const { accessToken } = await authService.refreshAccessToken();
         setToken(accessToken);
       } catch {
         setToken(null);
+      } finally {
+        setIsLoading(false);
       }
     };
+
     initToken();
   }, []);
 
   useEffect(() => {
     if (!token) return;
+    console.log('로그인 했군요, 유저 정보 가져올게요');
 
     const fetchUser = async () => {
       try {
@@ -94,7 +101,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, [token]);
 
   return (
-    <AuthContext.Provider value={{ token, setToken, user }}>
+    <AuthContext.Provider value={{ token, setToken, user, isLoading }}>
       {children}
     </AuthContext.Provider>
   );
