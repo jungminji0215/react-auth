@@ -24,29 +24,37 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<string | null | undefined>();
   const [isLoading, setIsLoading] = useState(true);
 
+  // useEffect()는 브라우저가 화면(DOM)을 그린 뒤 실행
   useEffect(() => {
-    console.log('로그인 했는지 확인할게요');
-    const initToken = async () => {
+    const init = async () => {
       try {
-        const { accessToken } = await authService.refreshAccessToken();
+        const { isLoggedIn, accessToken } = await authService.getSession();
+
+        if (!isLoggedIn || !accessToken) {
+          setToken(null);
+          setUser(null);
+          return;
+        }
+
         setToken(accessToken);
       } catch {
         setToken(null);
+        setUser(null);
       } finally {
         setIsLoading(false);
       }
     };
 
-    initToken();
+    init();
   }, []);
 
   useEffect(() => {
     if (!token) return;
-    console.log('로그인 했군요, 유저 정보 가져올게요');
 
     const fetchUser = async () => {
       try {
         const { user } = await authService.getMe();
+
         setUser(user);
       } catch {
         setUser(null);
@@ -55,31 +63,28 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     fetchUser();
   }, [token]);
 
+  // useEffect 면 /api/me 에서 토큰 안 실림
+  // 브라우저가 화면을 그리기 전에 먼저 이 인터셉터 등록이 끝남
   useLayoutEffect(() => {
-    const authInterceptor = api.interceptors.request.use((config) => {
-      config.headers.Authorization =
-        !config._retry && token
-          ? `Bearer ${token}`
-          : config.headers.Authorization;
+    const reqInterceptor = api.interceptors.request.use((config) => {
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
       return config;
     });
-
-    return () => {
-      api.interceptors.request.eject(authInterceptor);
-    };
+    return () => api.interceptors.request.eject(reqInterceptor);
   }, [token]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const refreshInterceptor = api.interceptors.response.use(
       (response) => response,
 
       async (error) => {
         const originalRequest = error.config;
 
-        if (error.response.status === 403) {
+        if (error.response.status === 401 && token) {
           try {
             const response = await authService.refreshAccessToken();
-
             setToken(response.accessToken);
 
             originalRequest.headers.Authorization = `Bearer ${response.accessToken}`;
